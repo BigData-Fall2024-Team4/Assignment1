@@ -9,6 +9,8 @@ python = "^3.11"
 mysql-connector-python = "^9.0.0"
 python-dotenv = "^1.0.1"
 azure-storage-blob = "^12.23.0"
+streamlit-option-menu = "^0.3.13"
+openai = "^1.47.0"
 
 
 [build-system]

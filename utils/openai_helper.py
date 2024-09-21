@@ -11,8 +11,8 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 def get_openai_response(prompt, file_content=None):
     try:
         messages = [
-            {"role": "system", "content": "You are a helpful assistant. Please provide your answer in one word or one number only."},
-            {"role": "user", "content": prompt + " Answer in one word or one number only."}
+            {"role": "system", "content": "You are a highly efficient AI assistant. "},
+            {"role": "user", "content": prompt + "Answer the question"}
         ]
         
         if file_content:

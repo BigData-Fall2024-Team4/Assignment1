@@ -11,6 +11,7 @@ python-dotenv = "^1.0.1"
 azure-storage-blob = "^12.23.0"
 streamlit-option-menu = "^0.3.13"
 openai = "^1.47.0"
+requests = "^2.32.3"
 
 
 [build-system]

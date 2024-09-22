@@ -1,4 +1,4 @@
-import mysql.connector
+import pymssql
 import json
 from azure.storage.blob import BlobServiceClient
 import os
@@ -30,19 +30,20 @@ def clone_repository():
     return LOCAL_CLONE_DIR
 
 def setup_database():
-    """Sets up the MySQL database connection and creates the table if it doesn't exist."""
-    db = mysql.connector.connect(
-        host=os.getenv("MYSQL_HOST"),
-        user=os.getenv("MYSQL_USER"),
-        passwd=os.getenv("MYSQL_PASSWORD"),
-        database=os.getenv("MYSQL_DATABASE")
+    """Sets up the MSSQL database connection and creates the table if it doesn't exist."""
+    conn = pymssql.connect(
+        server=os.getenv("MSSQL_SERVER"),
+        user=os.getenv("MSSQL_USER"),
+        password=os.getenv("MSSQL_PASSWORD"),
+        database=os.getenv("MSSQL_DATABASE")
     )
-    mycursor = db.cursor()
+    cursor = conn.cursor()
 
-    # Create table for validation cases
-    mycursor.execute("""
-        CREATE TABLE IF NOT EXISTS validation_cases (
-            id INT PRIMARY KEY AUTO_INCREMENT,
+    # Create table for validation cases if it does not exist
+    cursor.execute("""
+        IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='validation_cases' AND xtype='U')
+        CREATE TABLE validation_cases (
+            id INT PRIMARY KEY IDENTITY(1,1),
             task_id VARCHAR(255),
             question TEXT,
             level VARCHAR(50),
@@ -55,8 +56,9 @@ def setup_database():
             annotator_metadata TEXT
         )
     """)
+    conn.commit()
 
-    return db, mycursor
+    return conn, cursor
 
 def setup_azure_blob_client():
     """Sets up Azure Blob Storage connection."""
@@ -76,8 +78,8 @@ def upload_to_azure(container_client, local_file_path, file_name):
     except Exception as e:
         print(f"Error uploading {local_file_path} to Azure Blob Storage: {e}")
 
-def process_metadata(file_path, mycursor, db, container_client, local_clone_dir):
-    """Processes each line in the metadata file, uploads to Azure, and inserts into MySQL."""
+def process_metadata(file_path, cursor, conn, container_client, local_clone_dir):
+    """Processes each line in the metadata file, uploads to Azure, and inserts into MSSQL."""
     if not os.path.exists(file_path):
         print(f"File {file_path} does not exist.")
         return
@@ -104,25 +106,24 @@ def process_metadata(file_path, mycursor, db, container_client, local_clone_dir)
                 else:
                     print(f"File {local_file_path} not found in the GAIA dataset.")
             
-            # Insert data into MySQL
+            # Insert data into MSSQL
             sql = """
             INSERT INTO validation_cases (task_id, question, level, final_answer, file_name, steps, time_taken, tools, file_path, annotator_metadata)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """
             values = (task_id, question, level, final_answer, file_name, steps, time_taken, tools, local_file_path if file_name else 'NULL', json.dumps(annotator_metadata))
-            mycursor.execute(sql, values)
-            db.commit()
+            cursor.execute(sql, values)
+            conn.commit()
 
     print("Data inserted and files uploaded successfully.")
 
 def main():
     local_clone_dir = clone_repository()
     file_path = os.path.join(local_clone_dir, '2023', 'validation', 'metadata.jsonl')
-    db, mycursor = setup_database()
+    conn, cursor = setup_database()
     container_client = setup_azure_blob_client()
 
-    process_metadata(file_path, mycursor, db, container_client, local_clone_dir)
+    process_metadata(file_path, cursor, conn, container_client, local_clone_dir)
 
 if __name__ == "__main__":
     main()
-

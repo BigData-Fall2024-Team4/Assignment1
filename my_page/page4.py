@@ -29,7 +29,7 @@ def main():
     else:
         st.error("The answer does not match or contain the expected answer.")
 
-    if st.button("Back to Question Selection"):
+    if st.button("Back to Question"):
         st.session_state.current_page = "Question Selection"
         st.session_state.selected_question = None
         st.session_state.openai_response = None

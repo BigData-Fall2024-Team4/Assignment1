@@ -15,7 +15,7 @@ def get_data_from_db():
             database=os.getenv("MSSQL_DATABASE")
         )
         
-        cursor = connection.cursor(as_dict=True)  
+        cursor = connection.cursor(as_dict=True)
 
         # Execute SQL query to fetch data from validation_cases table
         cursor.execute("SELECT question, final_answer, steps, file_name FROM validation_cases")

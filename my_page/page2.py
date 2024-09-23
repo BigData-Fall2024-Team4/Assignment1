@@ -1,4 +1,3 @@
-
 import streamlit as st
 from utils.database import get_data_from_db
 from utils.openai_helper import get_openai_response
@@ -22,15 +21,45 @@ def main():
     st.write(selected_case['final_answer'])
 
     if st.button("Get OpenAI Response"):
-        file_content = get_file_content(selected_case['file_name'])
-        st.session_state.openai_response = get_openai_response(st.session_state.selected_question, file_content)
+        # Check if a file is associated with the selected case
+        if selected_case['file_name']:
+            # Show that the file is being accessed
+            st.info("Accessing file...")
+
+            # Fetch the file content
+            file_content = get_file_content(selected_case['file_name'])
+
+            # Check for errors in file content
+            if "Error" in file_content:
+                st.session_state.file_error = file_content  # Save the error in session state
+                st.session_state.openai_response = None  # Reset the OpenAI response if there's an error
+            else:
+                st.session_state.file_error = None  # Clear any previous errors
+                st.session_state.openai_response = get_openai_response(st.session_state.selected_question, file_content)
+        else:
+            # No file attached, so just get the OpenAI response
+            st.session_state.file_error = None
+            st.session_state.openai_response = get_openai_response(st.session_state.selected_question)
+
         st.rerun()
 
     st.subheader("OpenAI Response:")
-    openai_response = st.session_state.get('openai_response', None)
 
-    if openai_response:
-        st.write(openai_response)
+    # Display any file error below the OpenAI Response title
+    if 'file_error' in st.session_state and st.session_state.file_error:
+        st.error(st.session_state.file_error)
+
+        # If the error is "File format not supported", show the "Back to Question" button
+        if "File format not supported" in st.session_state.file_error:
+            if st.button("Back to Question"):
+                st.session_state.current_page = "Question Selection"
+                st.session_state.pop('file_error', None)  # Clear the error message
+                st.session_state.pop('openai_response', None)  # Reset OpenAI response
+                st.rerun()
+
+    elif 'openai_response' in st.session_state and st.session_state.openai_response:
+        # Show the OpenAI response if there is no error
+        st.write(st.session_state.openai_response)
 
         col1, col2 = st.columns(2)
         with col1:

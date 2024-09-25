@@ -1,5 +1,5 @@
 import streamlit as st
-from utils.database import get_data_from_db
+from utils.database import get_data_from_db, update_attempt
 from utils.openai_helper import get_openai_response
 from utils.file_helper import get_file_content
 
@@ -58,17 +58,18 @@ def main():
                 st.rerun()
 
     elif 'openai_response' in st.session_state and st.session_state.openai_response:
-        # Show the OpenAI response if there is no error
         st.write(st.session_state.openai_response)
 
         col1, col2 = st.columns(2)
         with col1:
             if st.button("Correct Answer"):
+                update_attempt(st.session_state.selected_question, "yes", 1)
                 st.session_state.current_page = "Question Selection"
                 st.session_state.pop('openai_response', None)
                 st.rerun()
         with col2:
-            if st.button("Wrong Answer(Provide steps)"):
+            if st.button("Wrong Answer (Provide steps)"):
+                update_attempt(st.session_state.selected_question, "no", 1)
                 st.session_state.current_page = "Edit Steps"
                 st.rerun()
     else:

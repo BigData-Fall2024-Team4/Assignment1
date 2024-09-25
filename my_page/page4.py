@@ -1,5 +1,5 @@
 import streamlit as st
-from utils.database import get_data_from_db
+from utils.database import get_data_from_db, update_attempt
 
 def main():
     st.title("Final Result")
@@ -26,8 +26,16 @@ def main():
 
     if expected_answer in openai_response or openai_response in expected_answer:
         st.success("The answer matches or contains the expected answer!")
+        if st.button("Correct Answer"):
+            update_attempt(st.session_state.selected_question, "yes", 2)
+            st.session_state.current_page = "Question Selection"
+            st.rerun()
     else:
         st.error("The answer does not match or contain the expected answer.")
+        if st.button("Wrong Answer"):
+            update_attempt(st.session_state.selected_question, "no", 2)
+            st.session_state.current_page = "Question Selection"
+            st.rerun()
 
     if st.button("Back to Question"):
         st.session_state.current_page = "Question Selection"

@@ -1,5 +1,5 @@
 import streamlit as st
-from utils.database import get_data_from_db
+from utils.database import get_data_from_db, update_attempt
 from utils.openai_helper import get_openai_response
 from utils.file_helper import get_file_content
 

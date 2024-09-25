@@ -1,4 +1,4 @@
 .env
-GAIA/
+GAIA/	
 __pycache__/
 *.pyc

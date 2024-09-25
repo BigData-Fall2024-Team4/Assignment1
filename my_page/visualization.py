@@ -1,39 +1,51 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from utils.database import get_data_from_db
+from utils.database import get_attempts_data
 
-def visualization_page():
-    st.title("Answer Visualization")
+def main():
+    st.title("Attempts Visualization")
 
-    data = get_data_from_db()
+    # Fetch attempts data
+    attempts_data = get_attempts_data()
+    df = pd.DataFrame(attempts_data)
+
+    # Overall statistics
+    st.subheader("Overall Statistics")
+    total_attempts = len(df)
+    correct_attempt_1 = df[df['attempt_1_answer'] == 'yes'].shape[0]
+    correct_attempt_2 = df[(df['attempt_2_answer'] == 'yes')].shape[0]
+    wrong_both_attempts = df[(df['attempt_1_answer'] == 'no') & (df['attempt_2_answer'] != 'no')].shape[0]
     
-    # Count correct and incorrect answers
-    correct_count = sum(1 for item in data if item.get('correct_answer', False))
-    incorrect_count = len(data) - correct_count
+    col1, col2, col3, col4 = st.columns(4)
+    col1.metric("Total Questions", total_attempts)
+    col2.metric("Correct on 1st Attempt", correct_attempt_1)
+    col3.metric("Correct on 2nd Attempt", correct_attempt_2)
+    col4.metric("Wrong on Both Attempts", wrong_both_attempts)
 
-    # Create a DataFrame for the pie chart
-    df = pd.DataFrame({
-        'Status': ['Correct', 'Incorrect'],
-        'Count': [correct_count, incorrect_count]
+    # Pie chart for attempt distribution
+    pie_data = pd.DataFrame({
+        'Category': ['Correct on 1st Attempt', 'Correct on 2nd Attempt', 'Wrong on Both Attempts'],
+        'Count': [correct_attempt_1, correct_attempt_2, wrong_both_attempts]
     })
 
-    # Create the pie chart
-    fig = px.pie(df, values='Count', names='Status', title='Correct vs Incorrect Answers')
-    
-    # Display the chart
-    st.plotly_chart(fig)
-
-    # Display a table with question details
-    st.subheader("Question Details")
-    question_data = [
-        {
-            "Question": item['question'],
-            "Status": "Correct" if item.get('correct_answer', False) else "Incorrect"
+    fig_pie = px.pie(
+        pie_data,
+        names='Category',
+        values='Count',
+        title="Distribution of Attempts",
+        color='Category',
+        color_discrete_map={
+            'Correct on 1st Attempt': 'green',
+            'Correct on 2nd Attempt': 'yellow',
+            'Wrong on Both Attempts': 'red'
         }
-        for item in data
-    ]
-    st.table(pd.DataFrame(question_data))
+    )
+    st.plotly_chart(fig_pie)
+
+    # Detailed attempts table
+    st.subheader("Detailed Attempts")
+    st.dataframe(df)
 
 if __name__ == "__main__":
-    visualization_page()
+    main()

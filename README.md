@@ -42,7 +42,7 @@ Python | Streamlit | OpenAI | Azure SQL | Azure Blob Storage
 
 | Name                            | Percentage Contribution |
 | ------------------------------- | ----------------------- |
-| Sarthak Somvanshi               | 43%                     |
+| Sarthak Somvanshi               | 33%                     |
 | Yuga Kanse                      | 33%                     |
 | Tanvi Inchanalkar               | 33%                     |
 

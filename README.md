@@ -1,6 +1,4 @@
-# Assignemnt1
-
-### AI-Enhanced NewsSphere: A Personalized News Digest Platform
+### Assignemnt1
 
 The objective of this project is to enhance AI model performance analysis by developing a model evaluation tool with Streamlit. The application will enable users to select validation test cases from the GAIA dataset and evaluate responses from OpenAI models. By comparing the OpenAI-generated answers to pre-defined correct answers, users can compare the OpenAI manually if the answer is correct.
 

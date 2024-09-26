@@ -27,9 +27,9 @@ def main():
     is_correct = expected_answer in openai_response or openai_response in expected_answer
     
     if is_correct:
-        st.success("The answer appears to be correct.")
+        st.success("Note: The answer appears to be correct.")
     else:
-        st.warning("The answer might be incorrect.")
+        st.warning("Note: The answer might be incorrect.")
 
     st.write("Please verify and select whether the answer is correct or wrong:")
     
@@ -48,13 +48,6 @@ def main():
             st.error("Updated as wrong answer.")
             st.session_state.current_page = "Question Selection"
             st.rerun()
-    
-    if st.button("Back to Question"):
-        st.session_state.current_page = "Question Selection"
-        st.session_state.selected_question = None
-        st.session_state.openai_response = None
-        st.session_state.new_openai_response = None
-        st.rerun()
 
 if __name__ == "__main__":
     main()

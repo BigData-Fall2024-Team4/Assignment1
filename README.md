@@ -41,16 +41,12 @@ Python | Streamlit | OpenAI | Azure SQL | Azure Blob Storage
 
 ### Contributions
 
-| Name                            | Contribution                                                                            |  
-| ------------------------------- | ----------------------------------------------------------------------------------------|
-| Sarthak Somvanshi                 | Text to speech Integration, Streamlit layout, Speech to Text Integration, Playlists     | 
-| Yuga Kanse                   | Airflow, Pinecone Integration, Playlists , Azure Data Storage                           | 
-| Tanvi Inchanalkar                     | JWT, Dockerization, GCP Deployment, FAST API                                            |                                                  
+| Name                            | Contribution                                                                            | Percentage Contribution |
+| ------------------------------- | ----------------------------------------------------------------------------------------| ----------------------- |
+| Sarthak Somvanshi               | Text to speech Integration, Streamlit layout, Speech to Text Integration, Playlists     | 33%                     |
+| Yuga Kanse                      | Airflow, Pinecone Integration, Playlists, Azure Data Storage                            | 33%                     |
+| Tanvi Inchanalkar               | JWT, Dockerization, GCP Deployment, FAST API                                            | 33%                     |
 
 ### Additional Notes
 WE ATTEST THAT WE HAVEN’T USED ANY OTHER STUDENTS’ WORK IN OUR ASSIGNMENT AND ABIDE BY THE POLICIES LISTED IN THE STUDENT HANDBOOK. 
-Contribution:
-a. Sarthak Somvanshi: 33%
-b. Yuga Kanse: 33%
-c. Tanvi Inchanalkar: 33%
 

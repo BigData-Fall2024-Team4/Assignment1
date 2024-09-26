@@ -30,7 +30,6 @@ Python | Streamlit | OpenAI | Azure SQL | Azure Blob Storage
 
 ![image](Architecture/gaia_architecture.png)
 
-
 ### Project Flow
 
 1) The application starts when a user selects a test case from the GAIA dataset via the frontend (Streamlit). The backend retrieves the metadata from a MySQL database and, if applicable, fetches external files stored in Azure Cloud Storage.
@@ -41,11 +40,11 @@ Python | Streamlit | OpenAI | Azure SQL | Azure Blob Storage
 
 ### Contributions
 
-| Name                            | Contribution                                                                            | Percentage Contribution |
-| ------------------------------- | ----------------------------------------------------------------------------------------| ----------------------- |
-| Sarthak Somvanshi               | Text to speech Integration, Streamlit layout, Speech to Text Integration, Playlists     | 33%                     |
-| Yuga Kanse                      | Airflow, Pinecone Integration, Playlists, Azure Data Storage                            | 33%                     |
-| Tanvi Inchanalkar               | JWT, Dockerization, GCP Deployment, FAST API                                            | 33%                     |
+| Name                            | Percentage Contribution |
+| ------------------------------- | ----------------------- |
+| Sarthak Somvanshi               | 43%                     |
+| Yuga Kanse                      | 33%                     |
+| Tanvi Inchanalkar               | 33%                     |
 
 ### Additional Notes
 WE ATTEST THAT WE HAVEN’T USED ANY OTHER STUDENTS’ WORK IN OUR ASSIGNMENT AND ABIDE BY THE POLICIES LISTED IN THE STUDENT HANDBOOK. 

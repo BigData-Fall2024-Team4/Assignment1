@@ -16,6 +16,11 @@ def question_selection_page():
 
         if st.button("Submit"):
             if selected_question:
+                # Reset openai_response when a new question is selected
+                if 'openai_response' in st.session_state:
+                    st.session_state.pop('openai_response')
+
+                # Set the selected question
                 st.session_state.selected_question = selected_question
                 st.session_state.current_page = "Answer Comparison"
                 st.rerun()

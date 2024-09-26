@@ -60,6 +60,17 @@ def main():
     elif 'openai_response' in st.session_state and st.session_state.openai_response:
         st.write(st.session_state.openai_response)
 
+        # Add the correctness prompt
+        expected_answer = selected_case['final_answer'].lower()
+        openai_response = st.session_state.openai_response.lower()
+        is_correct = expected_answer in openai_response or openai_response in expected_answer
+
+        if is_correct:
+            st.success("The answer might be correct.")
+        else:
+            st.warning("The answer might be wrong.")
+
+
         col1, col2 = st.columns(2)
         with col1:
             if st.button("Correct Answer"):

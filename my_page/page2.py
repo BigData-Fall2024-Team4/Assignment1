@@ -6,13 +6,21 @@ from utils.file_helper import get_file_content
 def main():
     st.title("Answer Comparison")
 
+    # If a question is selected and it's different from the last one, reset OpenAI response
     if 'selected_question' not in st.session_state or st.session_state.selected_question is None:
         st.warning("Please select a question on the Question Selection page first.")
         return
 
+    # Fetch the data from the database
     data = get_data_from_db()
     question_dict = {item['question']: item for item in data}
     selected_case = question_dict[st.session_state.selected_question]
+
+    # If the user selects a new question, reset the OpenAI response and file error
+    if 'last_selected_question' not in st.session_state or st.session_state.last_selected_question != st.session_state.selected_question:
+        st.session_state.pop('openai_response', None)  # Reset OpenAI response
+        st.session_state.pop('file_error', None)  # Reset file errors if any
+        st.session_state.last_selected_question = st.session_state.selected_question  # Update last selected question
 
     st.subheader("Question:")
     st.write(st.session_state.selected_question)
@@ -69,7 +77,6 @@ def main():
             st.success("The answer might be correct.")
         else:
             st.warning("The answer might be wrong.")
-
 
         col1, col2 = st.columns(2)
         with col1:

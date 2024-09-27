@@ -21,7 +21,7 @@ Google codelab: [https://codelabs-preview.appspot.com/?file_id=1Ih2p01AQZP2_p7pM
 
 App link (hosted on Streamlit Cloud): https://mainpy-heznqzbq2wxhheb66pts6x.streamlit.app/
 
-Youtube Video URL: https://www.youtube.com/watch?v=hqx6lcAuugc
+Demo Video URL: https://drive.google.com/file/d/15uZEUIzM380tWLgTcy5BQN5SA_6WAFyi/view?usp=sharing
 
 ### Tech Stack
 Python | Streamlit | OpenAI | Azure SQL | Azure Blob Storage
